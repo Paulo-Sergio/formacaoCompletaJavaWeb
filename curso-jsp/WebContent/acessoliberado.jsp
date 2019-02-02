@@ -9,6 +9,8 @@
 <body>
 
 	<h1>LIBERADO</h1>
+	
+	<a href="cadastroUsuario.jsp">Cadastro de usuários</a>
 
 </body>
 </html>
