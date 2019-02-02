@@ -14,12 +14,16 @@
 	<form action="UsuarioServlet" method="POST">
 		<table>
 			<tr>
+				<td>Código:</td>
+				<td><input type="text" readonly="readonly" id="id" name="id" value="${usuario.id}" /></td>
+			</tr>
+			<tr>
 				<td>Login:</td>
-				<td><input type="text" id="login" name="login" /></td>
+				<td><input type="text" id="login" name="login" value="${usuario.login}" /></td>
 			</tr>
 			<tr>
 				<td>Senha:</td>
-				<td><input type="password" id="password" name="password" /></td>
+				<td><input type="password" id="senha" name="senha" value="${usuario.senha}" /></td>
 			</tr>
 		</table>
 		<input type="submit" value="Salvar" />
@@ -28,9 +32,11 @@
 	<table>
 		<c:forEach items="${usuarios}" var="usuario">
 			<tr>
+				<td><c:out value="${usuario.id}"></c:out></td>
 				<td><c:out value="${usuario.login}"></c:out></td>
 				<td><c:out value="${usuario.senha}"></c:out></td>
-				<td><a href="UsuarioServlet?acao=delete&login=${usuario.login}">Excluir</a></td>
+				<td><a href="UsuarioServlet?acao=editar&login=${usuario.login}">Editar</a></td>
+				<td><a href="UsuarioServlet?acao=deletar&login=${usuario.login}">Excluir</a></td>
 			</tr>
 		</c:forEach>
 	</table>

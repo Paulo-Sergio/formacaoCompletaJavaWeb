@@ -9,6 +9,8 @@
 <body>
 
 	<h1>NEGADO</h1>
+	
+	<a href="LoginServlet">voltar</a>
 
 </body>
 </html>
