@@ -9,17 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.LoginDao;
+import dao.UsuarioDao;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private LoginDao loginDao = new LoginDao();
+	private UsuarioDao usuarioDao = new UsuarioDao();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 		dispatcher.forward(req, resp);
 	}
 
@@ -29,12 +29,11 @@ public class LoginServlet extends HttpServlet {
 			String login = req.getParameter("login");
 			String senha = req.getParameter("senha");
 
-			if (this.loginDao.validarLogin(login, senha)) {
-				RequestDispatcher dispatcher = req.getRequestDispatcher("acessoliberado.jsp");
+			if (this.usuarioDao.autenticar(login, senha)) {
+				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			} else {
-				RequestDispatcher dispatcher = req.getRequestDispatcher("acessonegado.jsp");
-				dispatcher.forward(req, resp);
+				resp.sendRedirect("LoginServlet");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

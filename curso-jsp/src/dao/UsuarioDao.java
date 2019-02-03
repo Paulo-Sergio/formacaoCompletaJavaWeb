@@ -20,11 +20,13 @@ public class UsuarioDao {
 
 	public void salvar(Usuario usuario) {
 		try {
-			String sql = "INSERT INTO usuarios (login, senha) VALUES (?, ?)";
+			String sql = "INSERT INTO usuarios (login, nome, senha, telefone) VALUES (?, ?, ?, ?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
-			stmt.setString(2, usuario.getSenha());
+			stmt.setString(2, usuario.getNome());
+			stmt.setString(3, usuario.getSenha());
+			stmt.setString(4, usuario.getTelefone());
 
 			stmt.execute();
 
@@ -42,12 +44,14 @@ public class UsuarioDao {
 
 	public void atualizar(Usuario usuario) {
 		try {
-			String sql = "UPDATE usuarios SET login = ?, senha = ? WHERE id = ?";
+			String sql = "UPDATE usuarios SET login = ?, nome = ?, senha = ?, telefone = ? WHERE id = ?";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
-			stmt.setString(2, usuario.getSenha());
-			stmt.setLong(3, usuario.getId());
+			stmt.setString(2, usuario.getNome());
+			stmt.setString(3, usuario.getSenha());
+			stmt.setString(4, usuario.getTelefone());
+			stmt.setLong(5, usuario.getId());
 
 			stmt.executeUpdate();
 
@@ -74,7 +78,9 @@ public class UsuarioDao {
 			Usuario usuario = new Usuario();
 			usuario.setId(resultSet.getLong("id"));
 			usuario.setLogin(resultSet.getString("login"));
+			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setTelefone(resultSet.getString("telefone"));
 
 			usuarios.add(usuario);
 		}
@@ -83,12 +89,12 @@ public class UsuarioDao {
 
 	}
 
-	public void deletar(String login) {
+	public void deletar(Long id) {
 		try {
-			String sql = "DELETE FROM usuarios WHERE login = ?";
+			String sql = "DELETE FROM usuarios WHERE id = ?";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, login);
+			stmt.setLong(1, id);
 
 			stmt.execute();
 
@@ -104,22 +110,53 @@ public class UsuarioDao {
 
 	}
 
-	public Usuario buscarPorLogin(String login) throws Exception {
-		String sql = "SELECT * FROM usuarios WHERE login = ?";
+	public Usuario buscarPorId(Long id) throws Exception {
+		String sql = "SELECT * FROM usuarios WHERE id = ?";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.setString(1, login);
+		stmt.setLong(1, id);
 
 		ResultSet resultSet = stmt.executeQuery();
 		if (resultSet.next()) {
 			Usuario usuario = new Usuario();
 			usuario.setId(resultSet.getLong("id"));
 			usuario.setLogin(resultSet.getString("login"));
+			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setTelefone(resultSet.getString("telefone"));
 			return usuario;
 		}
 
 		return null;
+	}
+	
+	public boolean isExistePorLogin(String login) throws Exception {
+		String sql = "SELECT count(1) as qtd FROM usuarios WHERE login = ?";
+
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, login);
+
+		ResultSet resultSet = stmt.executeQuery();
+		if (resultSet.next()) {
+			return resultSet.getInt("qtd") > 0;
+		}
+
+		return false;
+	}
+	
+	public boolean autenticar(String login, String senha) throws Exception {
+		String sql = "SELECT * FROM usuarios WHERE login = ? AND senha = ?";
+
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, login);
+		stmt.setString(2, senha);
+
+		ResultSet resultSet = stmt.executeQuery();
+
+		if (resultSet.next()) {
+			return true;
+		}
+		return false;
 	}
 
 }

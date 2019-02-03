@@ -23,7 +23,7 @@ public class UsuarioServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String acao = req.getParameter("acao");
-		String login = req.getParameter("login");
+		String idUsuario = req.getParameter("id");
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 
 		if (acao == null) {
@@ -39,13 +39,13 @@ public class UsuarioServlet extends HttpServlet {
 				dispatcher.forward(req, resp);
 
 			} else if (acao.equalsIgnoreCase("editar")) {
-				Usuario usuario = this.usuarioDao.buscarPorLogin(login);
+				Usuario usuario = this.usuarioDao.buscarPorId(Long.parseLong(idUsuario));
 				RequestDispatcher dispatcher = req.getRequestDispatcher("/cadastroUsuario.jsp");
 				req.setAttribute("usuario", usuario);
 				dispatcher.forward(req, resp);
 
 			} else if (acao.equalsIgnoreCase("deletar")) {
-				this.usuarioDao.deletar(login);
+				this.usuarioDao.deletar(Long.parseLong(idUsuario));
 				resp.sendRedirect("UsuarioServlet");
 			}
 		} catch (Exception e) {
@@ -55,22 +55,38 @@ public class UsuarioServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String acao = req.getParameter("acao");
 		String id = req.getParameter("id");
 		String login = req.getParameter("login");
+		String nome = req.getParameter("nome");
 		String senha = req.getParameter("senha");
+		String telefone = req.getParameter("telefone");
 
-		Usuario usuario = new Usuario();
-		usuario.setId(id == null || id.isEmpty() ? 0 : Long.parseLong(id));
-		usuario.setLogin(login);
-		usuario.setSenha(senha);
-
-		if (id == null || id.isEmpty()) {
-			this.usuarioDao.salvar(usuario);
-		} else {
-			this.usuarioDao.atualizar(usuario);
+		if (acao != null && acao.equalsIgnoreCase("reset")) {
+			resp.sendRedirect("UsuarioServlet");
+			return;
 		}
 
+		Usuario usuario = new Usuario();
+		usuario.setId(id == null || id.isEmpty() ? null : Long.parseLong(id));
+		usuario.setLogin(login);
+		usuario.setNome(nome);
+		usuario.setSenha(senha);
+		usuario.setTelefone(telefone);
+
 		try {
+			boolean isExisteUsuario = this.usuarioDao.isExistePorLogin(login);
+			if (id == null || id.isEmpty() && isExisteUsuario) {
+				req.setAttribute("msg", "Usuário já existe com o mesmo login!");
+				req.setAttribute("usuario", usuario);
+			}
+			
+			if (id == null || id.isEmpty() && !isExisteUsuario) {
+				this.usuarioDao.salvar(usuario);
+			} else if (id != null && !id.isEmpty()) {
+				this.usuarioDao.atualizar(usuario);
+			}
+
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/cadastroUsuario.jsp");
 			req.setAttribute("usuarios", this.usuarioDao.listarTodos());
 
