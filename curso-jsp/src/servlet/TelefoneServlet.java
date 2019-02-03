@@ -60,7 +60,7 @@ public class TelefoneServlet extends HttpServlet {
 		Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioEscolhido");
 
 		Telefone telefone = new Telefone();
-		telefone.setUsuarioId(usuario.getId());
+		telefone.setUsuario(usuario);
 		telefone.setNumero(numero);
 		telefone.setTipo(tipo);
 

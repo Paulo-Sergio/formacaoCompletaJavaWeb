@@ -9,6 +9,7 @@ import java.util.List;
 
 import connection.SingleConnection;
 import model.Telefone;
+import model.Usuario;
 
 public class TelefoneDao {
 
@@ -23,7 +24,7 @@ public class TelefoneDao {
 			String sql = "INSERT INTO telefones (usuario_id, numero, tipo) VALUES (?, ?, ?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setLong(1, telefone.getUsuarioId());
+			stmt.setLong(1, telefone.getUsuario().getId());
 			stmt.setString(2, telefone.getNumero());
 			stmt.setString(3, telefone.getTipo());
 
@@ -42,8 +43,9 @@ public class TelefoneDao {
 	}
 
 	public List<Telefone> listarTodos(Long idUsuario) throws Exception {
+		Usuario usuario = new UsuarioDao().buscarPorId(idUsuario);
+		
 		List<Telefone> telefones = new ArrayList<Telefone>();
-
 		String sql = "SELECT * FROM telefones WHERE usuario_id = ?";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -53,7 +55,7 @@ public class TelefoneDao {
 		while (resultSet.next()) {
 			Telefone telefone = new Telefone();
 			telefone.setId(resultSet.getLong("id"));
-			telefone.setUsuarioId(resultSet.getLong("usuario_id"));
+			telefone.setUsuario(usuario);
 			telefone.setNumero(resultSet.getString("numero"));
 			telefone.setTipo(resultSet.getString("tipo"));
 

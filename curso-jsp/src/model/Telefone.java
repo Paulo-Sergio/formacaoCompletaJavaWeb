@@ -3,7 +3,7 @@ package model;
 public class Telefone {
 
 	private Long id;
-	private Long usuarioId;
+	private Usuario usuario;
 	private String numero;
 	private String tipo;
 
@@ -31,12 +31,12 @@ public class Telefone {
 		this.tipo = tipo;
 	}
 
-	public Long getUsuarioId() {
-		return usuarioId;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setUsuarioId(Long usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }
