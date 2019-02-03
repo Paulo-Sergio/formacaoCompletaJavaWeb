@@ -81,7 +81,7 @@
 					<th>Id</th>
 					<th>Login</th>
 					<th>Nome</th>
-					<th>Fone</th>
+					<th>Fones</th>
 					<th>Editar</th>
 					<th>Delete</th>
 				</tr>
@@ -92,7 +92,11 @@
 						<td><c:out value="${u.id}"></c:out></td>
 						<td><c:out value="${u.login}"></c:out></td>
 						<td><c:out value="${u.nome}"></c:out></td>
-						<td><c:out value="${u.telefone}"></c:out></td>
+						<td>
+							<a href="TelefoneServlet?idUsuario=${u.id}"> 
+								<img alt="Telefones" title="Telefones" src="resources/img/telefone.png" width="20px" height="20px">
+							</a>
+						</td>
 						<td>
 							<a href="UsuarioServlet?acao=editar&id=${u.id}"> 
 								<img alt="Editar" title="Editar" src="resources/img/editar.png" width="20px" height="20px">
