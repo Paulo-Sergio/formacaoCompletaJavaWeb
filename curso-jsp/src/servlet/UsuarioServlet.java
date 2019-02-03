@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.UsuarioDao;
+import jdk.jfr.events.ErrorThrownEvent;
 import model.Usuario;
 
 @WebServlet("/UsuarioServlet")
@@ -42,6 +43,7 @@ public class UsuarioServlet extends HttpServlet {
 				Usuario usuario = this.usuarioDao.buscarPorId(Long.parseLong(idUsuario));
 				RequestDispatcher dispatcher = req.getRequestDispatcher("/cadastroUsuario.jsp");
 				req.setAttribute("usuario", usuario);
+				req.setAttribute("usuarios", usuarios);
 				dispatcher.forward(req, resp);
 
 			} else if (acao.equalsIgnoreCase("deletar")) {
@@ -75,21 +77,40 @@ public class UsuarioServlet extends HttpServlet {
 		usuario.setTelefone(telefone);
 
 		try {
-			boolean isExisteUsuario = this.usuarioDao.isExistePorLogin(login);
-			if (id == null || id.isEmpty() && isExisteUsuario) {
-				req.setAttribute("msg", "Usuário já existe com o mesmo login!");
-				req.setAttribute("usuario", usuario);
+			String msg = null;
+			boolean isErroValidacao = false;
+			if (login == null || login.isEmpty()) {
+				msg = "Login deve ser informado";
+				isErroValidacao = true;
+			} else if (nome == null || nome.isEmpty()) {
+				msg = "Nome deve ser informado";
+				isErroValidacao = true;
+			} else if (senha == null || senha.isEmpty()) {
+				msg = "Senha deve ser informada";
+				isErroValidacao = true;
 			}
-			
-			if (id == null || id.isEmpty() && !isExisteUsuario) {
-				this.usuarioDao.salvar(usuario);
-			} else if (id != null && !id.isEmpty()) {
-				this.usuarioDao.atualizar(usuario);
+
+			if (!isErroValidacao) {
+				boolean isExisteUsuario = this.usuarioDao.isExistePorLogin(login);
+				if ((id == null || id.isEmpty() && isExisteUsuario) || (id != null && isExisteUsuario)) {
+					msg = "Usuário já existe com o mesmo login!";
+				}
+
+				if (id == null || id.isEmpty() && !isExisteUsuario) {
+					this.usuarioDao.salvar(usuario);
+					resp.sendRedirect("UsuarioServlet");
+					return;
+				} else if (id != null && !id.isEmpty() && !isExisteUsuario) {
+					this.usuarioDao.atualizar(usuario);
+					resp.sendRedirect("UsuarioServlet");
+					return;
+				}
 			}
 
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/cadastroUsuario.jsp");
+			req.setAttribute("msg", msg);
+			req.setAttribute("usuario", usuario);
 			req.setAttribute("usuarios", this.usuarioDao.listarTodos());
-
 			dispatcher.forward(req, resp);
 		} catch (Exception e) {
 			e.printStackTrace();

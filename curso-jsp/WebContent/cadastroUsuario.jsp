@@ -66,19 +66,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${usuarios}" var="usuario">
+				<c:forEach items="${usuarios}" var="u">
 					<tr>
-						<td><c:out value="${usuario.id}"></c:out></td>
-						<td><c:out value="${usuario.login}"></c:out></td>
-						<td><c:out value="${usuario.nome}"></c:out></td>
-						<td><c:out value="${usuario.telefone}"></c:out></td>
+						<td><c:out value="${u.id}"></c:out></td>
+						<td><c:out value="${u.login}"></c:out></td>
+						<td><c:out value="${u.nome}"></c:out></td>
+						<td><c:out value="${u.telefone}"></c:out></td>
 						<td>
-							<a href="UsuarioServlet?acao=editar&id=${usuario.id}">
+							<a href="UsuarioServlet?acao=editar&id=${u.id}">
 								<img alt="Editar" title="Editar" src="resources/img/editar.png" width="20px" height="20px">
 							</a>
 						</td>
 						<td>
-							<a href="UsuarioServlet?acao=deletar&id=${usuario.id}">
+							<a href="UsuarioServlet?acao=deletar&id=${u.id}">
 								<img alt="Excluir" title="Excluir" src="resources/img/excluir.png" width="20px" height="20px">
 							</a>
 						</td>
