@@ -126,18 +126,23 @@ public class ProdutoDao {
 		return null;
 	}
 
-	public boolean isExistePorNome(String nome) throws Exception {
-		String sql = "SELECT count(1) as qtd FROM produtos WHERE nome = ?";
+	public Produto buscarPorNome(String nome) throws Exception {
+		String sql = "SELECT * FROM produtos WHERE nome = ?";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, nome);
 
 		ResultSet resultSet = stmt.executeQuery();
 		if (resultSet.next()) {
-			return resultSet.getInt("qtd") > 0;
+			Produto produto = new Produto();
+			produto.setId(resultSet.getLong("id"));
+			produto.setNome(resultSet.getString("nome"));
+			produto.setQuantidade(resultSet.getInt("quantidade"));
+			produto.setValor(resultSet.getDouble("valor"));
+			return produto;
 		}
 
-		return false;
+		return null;
 	}
 
 }

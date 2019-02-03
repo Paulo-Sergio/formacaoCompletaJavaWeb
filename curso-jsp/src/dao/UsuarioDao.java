@@ -20,13 +20,21 @@ public class UsuarioDao {
 
 	public void salvar(Usuario usuario) {
 		try {
-			String sql = "INSERT INTO usuarios (login, nome, senha, telefone) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO "
+					+ "usuarios (login, nome, senha, telefone, cep, rua, bairro, cidade, estado, ibge) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getNome());
 			stmt.setString(3, usuario.getSenha());
 			stmt.setString(4, usuario.getTelefone());
+			stmt.setString(5, usuario.getCep());
+			stmt.setString(6, usuario.getRua());
+			stmt.setString(7, usuario.getBairro());
+			stmt.setString(8, usuario.getCidade());
+			stmt.setString(9, usuario.getEstado());
+			stmt.setString(10, usuario.getIbge());
 
 			stmt.execute();
 
@@ -44,14 +52,22 @@ public class UsuarioDao {
 
 	public void atualizar(Usuario usuario) {
 		try {
-			String sql = "UPDATE usuarios SET login = ?, nome = ?, senha = ?, telefone = ? WHERE id = ?";
+			String sql = "UPDATE usuarios "
+					+ "SET login = ?, nome = ?, senha = ?, telefone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, ibge = ? "
+					+ "WHERE id = ?";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getNome());
 			stmt.setString(3, usuario.getSenha());
 			stmt.setString(4, usuario.getTelefone());
-			stmt.setLong(5, usuario.getId());
+			stmt.setString(5, usuario.getCep());
+			stmt.setString(6, usuario.getRua());
+			stmt.setString(7, usuario.getBairro());
+			stmt.setString(8, usuario.getCidade());
+			stmt.setString(9, usuario.getEstado());
+			stmt.setString(10, usuario.getIbge());
+			stmt.setLong(11, usuario.getId());
 
 			stmt.executeUpdate();
 
@@ -81,6 +97,12 @@ public class UsuarioDao {
 			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setTelefone(resultSet.getString("telefone"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setRua(resultSet.getString("rua"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setEstado(resultSet.getString("estado"));
+			usuario.setIbge(resultSet.getString("ibge"));
 
 			usuarios.add(usuario);
 		}
@@ -124,24 +146,43 @@ public class UsuarioDao {
 			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
 			usuario.setTelefone(resultSet.getString("telefone"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setRua(resultSet.getString("rua"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setEstado(resultSet.getString("estado"));
+			usuario.setIbge(resultSet.getString("ibge"));
 			return usuario;
 		}
 
 		return null;
 	}
 	
-	public boolean isExistePorLogin(String login) throws Exception {
-		String sql = "SELECT count(1) as qtd FROM usuarios WHERE login = ?";
+	public Usuario buscarPorLogin(String login) throws Exception {
+		String sql = "SELECT * FROM usuarios WHERE login = ?";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, login);
 
 		ResultSet resultSet = stmt.executeQuery();
 		if (resultSet.next()) {
-			return resultSet.getInt("qtd") > 0;
+			Usuario usuario = new Usuario();
+			usuario.setId(resultSet.getLong("id"));
+			usuario.setLogin(resultSet.getString("login"));
+			usuario.setNome(resultSet.getString("nome"));
+			usuario.setSenha(resultSet.getString("senha"));
+			usuario.setTelefone(resultSet.getString("telefone"));
+			usuario.setCep(resultSet.getString("cep"));
+			usuario.setRua(resultSet.getString("rua"));
+			usuario.setBairro(resultSet.getString("bairro"));
+			usuario.setCidade(resultSet.getString("cidade"));
+			usuario.setEstado(resultSet.getString("estado"));
+			usuario.setIbge(resultSet.getString("ibge"));
+			
+			return usuario;
 		}
 
-		return false;
+		return null;
 	}
 	
 	public boolean autenticar(String login, String senha) throws Exception {

@@ -10,6 +10,9 @@
 </head>
 <body>
 
+	<a href="index.jsp">Inicio</a>
+	<a href="LoginServlet">Sair</a>
+
 	<center>
 		<h1>Cadastro de produto</h1>
 		<h3 style="color: orange;">${msg}</h3>

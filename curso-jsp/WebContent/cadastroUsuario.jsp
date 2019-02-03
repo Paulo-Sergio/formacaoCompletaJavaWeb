@@ -7,8 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadastro de usuário</title>
 <link rel="stylesheet" href="resources/css/cadastro.css">
+<script src="resources/js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+
+	<a href="index.jsp">Inicio</a>
+	<a href="LoginServlet">Sair</a>
 
 	<center>
 		<h1>Cadastro de usuário</h1>
@@ -22,22 +26,39 @@
 					<tr>
 						<td class="label">Código:</td>
 						<td><input type="text" readonly="readonly" id="id" name="id" value="${usuario.id}" /></td>
-					</tr>
-					<tr>
 						<td class="label">Login:</td>
 						<td><input type="text" id="login" name="login" value="${usuario.login}" /></td>
 					</tr>
+
 					<tr>
 						<td class="label">Nome:</td>
 						<td><input type="text" id="nome" name="nome" value="${usuario.nome}" /></td>
-					</tr>
-					<tr>
 						<td class="label">Senha:</td>
 						<td><input type="password" id="senha" name="senha" value="${usuario.senha}" /></td>
 					</tr>
+					
 					<tr>
 						<td class="label">Telefone:</td>
 						<td><input type="text" id="telefone" name="telefone" value="${usuario.telefone}"></td>
+						<td class="label">CEP:</td>
+						<td><input type="text" id="cep" name="cep" onblur="consultarCep()" value="${usuario.cep}"></td>
+					</tr>
+
+					<tr>
+						<td class="label">Rua:</td>
+						<td><input type="text" id="rua" name="rua" value="${usuario.rua}"></td>
+						<td class="label">Bairro:</td>
+						<td><input type="text" id="bairro" name="bairro" value="${usuario.bairro}"></td>
+					</tr>
+					<tr>
+						<td class="label">Cidade:</td>
+						<td><input type="text" id="cidade" name="cidade" value="${usuario.cidade}"></td>
+						<td class="label">Estado:</td>
+						<td><input type="text" id="estado" name="estado" value="${usuario.estado}"></td>
+					</tr>
+					<tr>
+						<td class="label">IBGE:</td>
+						<td><input type="text" id="ibge" name="ibge" value="${usuario.ibge}"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -119,6 +140,23 @@
 			document.getElementById("nome").value = '';
 			document.getElementById("senha").value = '';
 			document.getElementById("telefone").value = '';
+		}
+		
+		/* BUSCAR CEP VIA JQuery */
+		function consultarCep() {
+			var cep = $('#cep').val()
+			
+			$.getJSON("https://viacep.com.br/ws/"+cep+"/json", function(dados){
+				if (!("erro" in dados)) {
+					$("#rua").val(dados.logradouro)
+					$("#bairro").val(dados.bairro)
+					$("#cidade").val(dados.localidade)
+					$("#estado").val(dados.uf)
+					$("#ibge").val(dados.ibge)
+				} else {
+					alert("CEP não encontrado!")
+				}
+			})
 		}
 	</script>
 

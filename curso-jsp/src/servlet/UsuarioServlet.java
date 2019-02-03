@@ -61,6 +61,12 @@ public class UsuarioServlet extends HttpServlet {
 		String nome = req.getParameter("nome");
 		String senha = req.getParameter("senha");
 		String telefone = req.getParameter("telefone");
+		String cep = req.getParameter("cep");
+		String rua = req.getParameter("rua");
+		String bairro = req.getParameter("bairro");
+		String cidade = req.getParameter("cidade");
+		String estado = req.getParameter("estado");
+		String ibge = req.getParameter("ibge");
 
 		Usuario usuario = new Usuario();
 		usuario.setId(id == null || id.isEmpty() ? null : Long.parseLong(id));
@@ -68,6 +74,12 @@ public class UsuarioServlet extends HttpServlet {
 		usuario.setNome(nome);
 		usuario.setSenha(senha);
 		usuario.setTelefone(telefone);
+		usuario.setCep(cep);
+		usuario.setRua(rua);
+		usuario.setBairro(bairro);
+		usuario.setCidade(cidade);
+		usuario.setEstado(estado);
+		usuario.setIbge(ibge);
 
 		try {
 			String msg = null;
@@ -84,19 +96,26 @@ public class UsuarioServlet extends HttpServlet {
 			}
 
 			if (!isErroValidacao) {
-				boolean isExisteUsuario = this.usuarioDao.isExistePorLogin(login);
-				if ((id == null || id.isEmpty() && isExisteUsuario) || (id != null && isExisteUsuario)) {
+				Usuario usuarioParaAtualizar = this.usuarioDao.buscarPorId(usuario.getId());
+				Usuario usuarioBuscado = this.usuarioDao.buscarPorLogin(login);
+				if ((id == null || id.isEmpty() && usuarioBuscado != null) || (id != null && usuarioBuscado != null)) {
 					msg = "Usuário já existe com o mesmo login!";
 				}
 
-				if (id == null || id.isEmpty() && !isExisteUsuario) {
+				if (id == null || id.isEmpty() && usuarioBuscado == null) {
 					this.usuarioDao.salvar(usuario);
 					resp.sendRedirect("UsuarioServlet");
 					return;
-				} else if (id != null && !id.isEmpty() && !isExisteUsuario) {
-					this.usuarioDao.atualizar(usuario);
-					resp.sendRedirect("UsuarioServlet");
-					return;
+				} else if (id != null && !id.isEmpty()) {
+					/*
+					 * se encontrar usuario mesmo login, verificar se estou
+					 * atualizando do meu proprio login
+					 */
+					if (usuarioBuscado == null || usuarioParaAtualizar.getLogin().equals(usuarioBuscado.getLogin())) {
+						this.usuarioDao.atualizar(usuario);
+						resp.sendRedirect("UsuarioServlet");
+						return;
+					}
 				}
 			}
 

@@ -3,9 +3,9 @@ table .label {
 	text-align: right;
 }
 
-table input[type="text"], table input[type="password"] {
+/*table input[type="text"], table input[type="password"] {
 	width: 300px;
-}
+}*/
 
 /* TEMPLATE */
 .form-style-1 {
