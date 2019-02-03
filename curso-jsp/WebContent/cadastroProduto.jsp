@@ -15,7 +15,7 @@
 		<h3 style="color: orange;">${msg}</h3>
 	</center>
 	
-	<form action="ProdutoServlet" method="POST" id="formProduto">
+	<form action="ProdutoServlet" method="POST" id="formProduto" onsubmit="return validarCampos()">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -38,8 +38,8 @@
 					<tr>
 						<td></td>
 						<td>
-							<input type="submit" value="Cancelar"
-								onclick="document.getElementById('formProduto').action = 'ProdutoServlet?acao=reset'" />
+							<input type="button" value="Cancelar"
+								onclick="isEdicao() ? location.href = 'ProdutoServlet' : limparCampos()" />
 							<input type="submit" value="Salvar" />
 						</td>
 					</tr>
@@ -85,19 +85,34 @@
 	</div>
 	
 	<script type="text/javascript">
-	function validarCampos() {
-		if (document.getElementById("nome").value == '') {
-			alert('Informe o Nome');
-			return false;
-		} else if (document.getElementById("quantidade").value == '') {
-			alert('Informe o Quantidade');
-			return false;
-		} else if (document.getElementById("valor").value == '') {
-			alert('Informe o Valor R$');
-			return false;
+		function validarCampos() {
+			if (document.getElementById("nome").value == '') {
+				alert('Informe o Nome');
+				return false;
+			} else if (document.getElementById("quantidade").value == '') {
+				alert('Informe o Quantidade');
+				return false;
+			} else if (document.getElementById("valor").value == '') {
+				alert('Informe o Valor R$');
+				return false;
+			}
+			return true;
 		}
-		return true;
-	}
+		
+		function isEdicao() {
+			var id = document.getElementById("id").value;
+			if (id == '' || id == 0) {
+				console.log('idEdicao() false');
+				return false;
+			}
+			return true;
+		}
+		
+		function limparCampos() {
+			document.getElementById("nome").value = '';
+			document.getElementById("quantidade").value = '';
+			document.getElementById("valor").value = '';
+		}
 	</script>
 
 </body>

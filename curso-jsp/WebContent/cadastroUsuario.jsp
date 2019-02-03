@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,8 +14,8 @@
 		<h1>Cadastro de usuário</h1>
 		<h3 style="color: orange;">${msg}</h3>
 	</center>
-	
-	<form action="UsuarioServlet" method="POST" id="formUsuario">
+
+	<form action="UsuarioServlet" method="POST" id="formUsuario" onsubmit="return validarCampos()">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -42,8 +42,8 @@
 					<tr>
 						<td></td>
 						<td>
-							<input type="submit" value="Cancelar"
-								onclick="document.getElementById('formUsuario').action = 'UsuarioServlet?acao=reset'" />
+							<input type="button" value="Cancelar"
+								onclick="isEdicao() ? location.href = 'UsuarioServlet' : limparCampos()" />
 							<input type="submit" value="Salvar" />
 						</td>
 					</tr>
@@ -51,7 +51,7 @@
 			</li>
 		</ul>
 	</form>
-	
+
 	<div class="container">
 		<table class="responsive-table">
 			<caption>Usuários cadastrados</caption>
@@ -73,12 +73,12 @@
 						<td><c:out value="${u.nome}"></c:out></td>
 						<td><c:out value="${u.telefone}"></c:out></td>
 						<td>
-							<a href="UsuarioServlet?acao=editar&id=${u.id}">
+							<a href="UsuarioServlet?acao=editar&id=${u.id}"> 
 								<img alt="Editar" title="Editar" src="resources/img/editar.png" width="20px" height="20px">
 							</a>
 						</td>
 						<td>
-							<a href="UsuarioServlet?acao=deletar&id=${u.id}">
+							<a href="UsuarioServlet?acao=deletar&id=${u.id}"> 
 								<img alt="Excluir" title="Excluir" src="resources/img/excluir.png" width="20px" height="20px">
 							</a>
 						</td>
@@ -87,24 +87,38 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<script type="text/javascript">
 		function validarCampos() {
+			console.log('validarCampos()');
 			if (document.getElementById("login").value == '') {
 				alert('Informe o Login');
-				return false;
-			} else if (document.getElementById("senha").value == '') {
-				alert('Informe o Senha');
 				return false;
 			} else if (document.getElementById("nome").value == '') {
 				alert('Informe o Nome');
 				return false;
-			} else if (document.getElementById("telefone").value == '') {
-				alert('Informe o Telefone');
+			} else if (document.getElementById("senha").value == '') {
+				alert('Informe o Senha');
 				return false;
 			}
-			
+
 			return true;
+		}
+		
+		function isEdicao() {
+			var id = document.getElementById("id").value;
+			if (id == '' || id == 0) {
+				console.log('idEdicao() false');
+				return false;
+			}
+			return true;
+		}
+		
+		function limparCampos() {
+			document.getElementById("login").value = '';
+			document.getElementById("nome").value = '';
+			document.getElementById("senha").value = '';
+			document.getElementById("telefone").value = '';
 		}
 	</script>
 

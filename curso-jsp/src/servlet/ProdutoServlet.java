@@ -56,28 +56,31 @@ public class ProdutoServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String acao = req.getParameter("acao");
 		String id = req.getParameter("id");
 		String nome = req.getParameter("nome");
 		String quantidade = req.getParameter("quantidade");
 		String valor = req.getParameter("valor");
 
-		if (acao != null && acao.equalsIgnoreCase("reset")) {
-			resp.sendRedirect("ProdutoServlet");
-			return;
-		}
-
 		Produto produto = new Produto();
 		produto.setId(id == null || id.isEmpty() ? null : Long.parseLong(id));
 		produto.setNome(nome);
-		produto.setQuantidade(Integer.parseInt(quantidade));
-		produto.setValor(Double.parseDouble(valor));
+		if (quantidade != null && !quantidade.isEmpty())
+			produto.setQuantidade(Integer.parseInt(quantidade));
+		if (valor != null && !valor.isEmpty())
+			produto.setValor(Double.parseDouble(valor));
 
 		try {
 			String msg = null;
 			boolean isErroValidacao = false;
 			if (nome == null || nome.isEmpty()) {
 				msg = "Nome deve ser informado";
+				isErroValidacao = true;
+			} else if (quantidade == null || quantidade.isEmpty()) {
+				msg = "Quantidade deve ser informado";
+				isErroValidacao = true;
+			} else if (valor == null || valor.isEmpty()) {
+				msg = "Valor R$ deve ser informado";
+				isErroValidacao = true;
 			}
 
 			if (!isErroValidacao) {

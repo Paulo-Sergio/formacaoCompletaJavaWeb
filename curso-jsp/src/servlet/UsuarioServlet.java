@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.UsuarioDao;
-import jdk.jfr.events.ErrorThrownEvent;
 import model.Usuario;
 
 @WebServlet("/UsuarioServlet")
@@ -57,17 +56,11 @@ public class UsuarioServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String acao = req.getParameter("acao");
 		String id = req.getParameter("id");
 		String login = req.getParameter("login");
 		String nome = req.getParameter("nome");
 		String senha = req.getParameter("senha");
 		String telefone = req.getParameter("telefone");
-
-		if (acao != null && acao.equalsIgnoreCase("reset")) {
-			resp.sendRedirect("UsuarioServlet");
-			return;
-		}
 
 		Usuario usuario = new Usuario();
 		usuario.setId(id == null || id.isEmpty() ? null : Long.parseLong(id));
