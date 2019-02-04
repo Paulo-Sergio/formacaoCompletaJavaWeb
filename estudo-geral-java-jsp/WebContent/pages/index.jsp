@@ -22,7 +22,6 @@
 		  <td><a href="paginaPai.jsp">Load jQuery</a></td>
 		</tr>
 		
-		
 		<tr>
 		  <td><a href="progresbar.jsp">Progress Bar</a></td>
 		</tr>
