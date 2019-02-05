@@ -13,6 +13,8 @@ public class Usuario {
 	private String cidade;
 	private String estado;
 	private String ibge;
+	private String fotoBase64;
+	private String contentType;
 
 	public Long getId() {
 		return id;
@@ -102,9 +104,20 @@ public class Usuario {
 		this.cep = cep;
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", login=" + login + ", nome=" + nome + ", telefone=" + telefone + "]";
+	public String getFotoBase64() {
+		return fotoBase64;
+	}
+
+	public void setFotoBase64(String fotoBase64) {
+		this.fotoBase64 = fotoBase64;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 }

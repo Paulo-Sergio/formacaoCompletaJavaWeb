@@ -21,8 +21,8 @@ public class UsuarioDao {
 	public void salvar(Usuario usuario) {
 		try {
 			String sql = "INSERT INTO "
-					+ "usuarios (login, nome, senha, telefone, cep, rua, bairro, cidade, estado, ibge) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "usuarios (login, nome, senha, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
@@ -35,6 +35,8 @@ public class UsuarioDao {
 			stmt.setString(8, usuario.getCidade());
 			stmt.setString(9, usuario.getEstado());
 			stmt.setString(10, usuario.getIbge());
+			stmt.setString(11, usuario.getFotoBase64());
+			stmt.setString(12, usuario.getContentType());
 
 			stmt.execute();
 

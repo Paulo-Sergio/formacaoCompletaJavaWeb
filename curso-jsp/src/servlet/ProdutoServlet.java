@@ -84,7 +84,6 @@ public class ProdutoServlet extends HttpServlet {
 			}
 
 			if (!isErroValidacao) {
-				Produto produtoParaAtualizar = this.produtoDao.buscarPorId(produto.getId());
 				Produto produtosBuscado = this.produtoDao.buscarPorNome(nome);
 				if ((id == null || id.isEmpty() && produtosBuscado != null) || (id != null && produtosBuscado != null)) {
 					msg = "Produto de mesmo nome já existe!";
@@ -95,10 +94,9 @@ public class ProdutoServlet extends HttpServlet {
 					resp.sendRedirect("ProdutoServlet");
 					return;
 				} else if (id != null && !id.isEmpty()) {
-					/*
-					 * se encontrar produto mesmo nome, verificar se estou
-					 * atualizando do meu proprio protudo
-					 */
+					// se encontrar produto mesmo nome, verificar se estou
+					// atualizando do meu proprio protudo
+					Produto produtoParaAtualizar = this.produtoDao.buscarPorId(produto.getId());
 					if (produtosBuscado == null || produtoParaAtualizar.getNome().equals(produtosBuscado.getNome())) {
 						this.produtoDao.atualizar(produto);
 						resp.sendRedirect("ProdutoServlet");

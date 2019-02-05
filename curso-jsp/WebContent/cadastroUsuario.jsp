@@ -19,7 +19,7 @@
 		<h3 style="color: orange;">${msg}</h3>
 	</center>
 
-	<form action="UsuarioServlet" method="POST" id="formUsuario" onsubmit="return validarCampos()">
+	<form action="UsuarioServlet" method="POST" id="formUsuario" onsubmit="return validarCampos()" enctype="multipart/form-data">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -59,6 +59,8 @@
 					<tr>
 						<td class="label">IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${usuario.ibge}"></td>
+						<td class="label">Foto:</td>
+						<td><input type="file" id="foto" name="foto"></td>
 					</tr>
 					<tr>
 						<td></td>

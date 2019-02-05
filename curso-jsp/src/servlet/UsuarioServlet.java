@@ -1,20 +1,30 @@
 package servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import dao.UsuarioDao;
 import model.Usuario;
 
 @WebServlet("/UsuarioServlet")
+@MultipartConfig
 public class UsuarioServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -82,6 +92,17 @@ public class UsuarioServlet extends HttpServlet {
 		usuario.setIbge(ibge);
 
 		try {
+			/** Inicio File Upload de imagens e pdf */
+			if (ServletFileUpload.isMultipartContent(req)) {
+				Part imagemFoto = req.getPart("foto");
+
+				String fotoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(imagemFoto.getInputStream()));
+
+				usuario.setFotoBase64(fotoBase64);
+				usuario.setContentType(imagemFoto.getContentType());
+			}
+			/** FIM File Upload de imagens e pdf */
+
 			String msg = null;
 			boolean isErroValidacao = false;
 			if (login == null || login.isEmpty()) {
@@ -96,7 +117,6 @@ public class UsuarioServlet extends HttpServlet {
 			}
 
 			if (!isErroValidacao) {
-				Usuario usuarioParaAtualizar = this.usuarioDao.buscarPorId(usuario.getId());
 				Usuario usuarioBuscado = this.usuarioDao.buscarPorLogin(login);
 				if ((id == null || id.isEmpty() && usuarioBuscado != null) || (id != null && usuarioBuscado != null)) {
 					msg = "Usuário já existe com o mesmo login!";
@@ -107,10 +127,9 @@ public class UsuarioServlet extends HttpServlet {
 					resp.sendRedirect("UsuarioServlet");
 					return;
 				} else if (id != null && !id.isEmpty()) {
-					/*
-					 * se encontrar usuario mesmo login, verificar se estou
-					 * atualizando do meu proprio login
-					 */
+					// se encontrar usuario mesmo login, verificar se estou
+					// atualizando do meu proprio login
+					Usuario usuarioParaAtualizar = this.usuarioDao.buscarPorId(usuario.getId());
 					if (usuarioBuscado == null || usuarioParaAtualizar.getLogin().equals(usuarioBuscado.getLogin())) {
 						this.usuarioDao.atualizar(usuario);
 						resp.sendRedirect("UsuarioServlet");
@@ -127,5 +146,17 @@ public class UsuarioServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/* Converte a entrada de fluxo de dados da imagem para array de bytes */
+	private byte[] converteStreamParaByte(InputStream imagem) throws IOException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		int reads = imagem.read();
+		while (reads != -1) {
+			outputStream.write(reads);
+			reads = imagem.read();
+		}
+
+		return outputStream.toByteArray();
 	}
 }
