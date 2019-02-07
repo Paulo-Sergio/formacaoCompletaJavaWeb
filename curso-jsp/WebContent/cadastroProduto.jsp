@@ -11,7 +11,7 @@
 <body>
 
 	<a href="index.jsp">Inicio</a>
-	<a href="LoginServlet">Sair</a>
+	<a href="LoginServlet?acao=logout">Sair</a>
 
 	<center>
 		<h1>Cadastro de produto</h1>

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.UsuarioDao;
 
@@ -19,6 +20,15 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String acao = req.getParameter("acao");
+		
+		if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
+			HttpSession session = req.getSession();
+			session.invalidate();
+			resp.sendRedirect("AutenticacaoServlet");
+			return;
+		}
+		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 		dispatcher.forward(req, resp);
 	}
@@ -30,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 			String senha = req.getParameter("senha");
 
 			if (this.usuarioDao.autenticar(login, senha)) {
+				req.getSession().setAttribute("usuario", this.usuarioDao.buscarPorLogin(login));
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			} else {
