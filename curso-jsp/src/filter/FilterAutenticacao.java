@@ -17,7 +17,7 @@ import model.Usuario;
 
 @WebFilter(urlPatterns = { "/*" })
 public class FilterAutenticacao implements Filter {
-
+	
 	@Override
 	public void destroy() {
 		System.out.println("### FilterAutenticacao.destroy");
@@ -34,8 +34,8 @@ public class FilterAutenticacao implements Filter {
 		Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
 		
 		String uri = request.getRequestURI();
-
-		if (usuarioLogado == null && !uri.contains("LoginServlet")) { // usuario não logado
+		
+		if (usuarioLogado == null && !uri.contains("LoginServlet") && !uri.matches(".*(css|jpg|png|gif|js)")) { // usuario não logado
 			response.sendRedirect("LoginServlet");
 			return;
 		}
@@ -44,7 +44,7 @@ public class FilterAutenticacao implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
 		System.out.println("### FilterAutenticacao.init");
 	}
 
