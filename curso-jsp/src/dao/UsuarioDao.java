@@ -55,7 +55,8 @@ public class UsuarioDao {
 	public void atualizar(Usuario usuario) {
 		try {
 			String sql = "UPDATE usuarios "
-					+ "SET login = ?, nome = ?, senha = ?, telefone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, ibge = ? "
+					+ "SET login = ?, nome = ?, senha = ?, telefone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, "
+					+ "ibge = ?, fotobase64 = ?, contenttype = ? "
 					+ "WHERE id = ?";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
@@ -69,7 +70,9 @@ public class UsuarioDao {
 			stmt.setString(8, usuario.getCidade());
 			stmt.setString(9, usuario.getEstado());
 			stmt.setString(10, usuario.getIbge());
-			stmt.setLong(11, usuario.getId());
+			stmt.setString(11, usuario.getFotoBase64());
+			stmt.setString(12, usuario.getContentType());
+			stmt.setLong(13, usuario.getId());
 
 			stmt.executeUpdate();
 
@@ -105,6 +108,8 @@ public class UsuarioDao {
 			usuario.setCidade(resultSet.getString("cidade"));
 			usuario.setEstado(resultSet.getString("estado"));
 			usuario.setIbge(resultSet.getString("ibge"));
+			usuario.setFotoBase64(resultSet.getString("fotobase64"));
+			usuario.setContentType(resultSet.getString("contenttype"));
 
 			usuarios.add(usuario);
 		}
@@ -154,6 +159,8 @@ public class UsuarioDao {
 			usuario.setCidade(resultSet.getString("cidade"));
 			usuario.setEstado(resultSet.getString("estado"));
 			usuario.setIbge(resultSet.getString("ibge"));
+			usuario.setFotoBase64(resultSet.getString("fotobase64"));
+			usuario.setContentType(resultSet.getString("contenttype"));
 			return usuario;
 		}
 
@@ -180,6 +187,8 @@ public class UsuarioDao {
 			usuario.setCidade(resultSet.getString("cidade"));
 			usuario.setEstado(resultSet.getString("estado"));
 			usuario.setIbge(resultSet.getString("ibge"));
+			usuario.setFotoBase64(resultSet.getString("fotobase64"));
+			usuario.setContentType(resultSet.getString("contenttype"));
 			
 			return usuario;
 		}

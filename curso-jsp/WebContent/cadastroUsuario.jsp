@@ -82,6 +82,7 @@
 				<tr>
 					<th>Id</th>
 					<th>Login</th>
+					<th>Foto</th>
 					<th>Nome</th>
 					<th>Fones</th>
 					<th>Editar</th>
@@ -93,6 +94,11 @@
 					<tr>
 						<td><c:out value="${u.id}"></c:out></td>
 						<td><c:out value="${u.login}"></c:out></td>
+						<td>
+							<a href="UsuarioServlet?acao=download&id=${u.id}">
+								<img src="<c:out value="${u.tempFotoUsuario}"/>" alt="Imagem usuário" title="Imagem usuário" width="32px" height="32px">
+							</a>
+						</td>
 						<td><c:out value="${u.nome}"></c:out></td>
 						<td>
 							<a href="TelefoneServlet?idUsuario=${u.id}"> 

@@ -1,5 +1,6 @@
 package servlet;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -58,6 +58,28 @@ public class UsuarioServlet extends HttpServlet {
 			} else if (acao.equalsIgnoreCase("deletar")) {
 				this.usuarioDao.deletar(Long.parseLong(idUsuario));
 				resp.sendRedirect("UsuarioServlet");
+			} else if (acao.equalsIgnoreCase("download")) {
+				Usuario usuario = this.usuarioDao.buscarPorId(Long.parseLong(idUsuario));
+				if (usuario != null) {
+					// image/png (contentType)
+					resp.setHeader("Content-Disposition", "attachment;filename=arquivo." + usuario.getContentType().split("\\/")[1]);
+
+					/* Converte a base64 da imagem do banco para byte[] */
+					byte[] imageFotoBytes = new Base64().decodeBase64(usuario.getFotoBase64());
+					/* coloca os bytes em um objeto de entrada para processar */
+					InputStream is = new ByteArrayInputStream(imageFotoBytes);
+					/* inicio da resposta para o navegador */
+					int read = 0;
+					byte[] bytes = new byte[1024];
+					ServletOutputStream os = resp.getOutputStream();
+
+					while ((read = is.read(bytes)) != -1) {
+						os.write(bytes, 0, read);
+					}
+
+					os.flush();
+					os.close();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

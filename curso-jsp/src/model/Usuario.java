@@ -16,6 +16,8 @@ public class Usuario {
 	private String fotoBase64;
 	private String contentType;
 
+	private String tempFotoUsuario;
+
 	public Long getId() {
 		return id;
 	}
@@ -120,4 +122,8 @@ public class Usuario {
 		this.contentType = contentType;
 	}
 
+	public String getTempFotoUsuario() {
+		tempFotoUsuario = "data:" + contentType + ";base64," + fotoBase64;
+		return tempFotoUsuario;
+	}
 }
