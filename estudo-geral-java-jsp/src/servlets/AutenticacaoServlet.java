@@ -38,8 +38,8 @@ public class AutenticacaoServlet extends HttpServlet {
 		usuario.setLogin(login);
 		usuario.setSenha(senha);
 
-		if (login.equalsIgnoreCase("admin") && senha.equalsIgnoreCase("123")) {
-			req.getSession().setAttribute("usuario", usuario);
+		if (login.equalsIgnoreCase("admin") && senha.equalsIgnoreCase("admin")) {
+			req.getSession().setAttribute("usuarioLogado", usuario);
 			resp.sendRedirect("pages/index.jsp");
 		} else {
 			resp.sendRedirect("AutenticacaoServlet");

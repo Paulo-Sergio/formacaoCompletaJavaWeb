@@ -31,10 +31,10 @@ public class FilterAutenticacao implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 
 		HttpSession session = request.getSession();
-		Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
+		Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
 		if (usuarioLogado == null) { // usuario não logado
-			response.sendRedirect("AutenticacaoServlet");
+			response.sendRedirect("../AutenticacaoServlet");
 			return;
 		}
 
