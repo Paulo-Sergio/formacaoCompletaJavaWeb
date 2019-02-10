@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 			String senha = req.getParameter("senha");
 
 			if (this.usuarioDao.autenticar(login, senha)) {
-				req.getSession().setAttribute("usuario", this.usuarioDao.buscarPorLogin(login));
+				req.getSession().setAttribute("usuarioLogado", this.usuarioDao.buscarPorLogin(login));
 				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
 				dispatcher.forward(req, resp);
 			} else {

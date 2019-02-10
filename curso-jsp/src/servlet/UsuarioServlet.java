@@ -61,24 +61,40 @@ public class UsuarioServlet extends HttpServlet {
 			} else if (acao.equalsIgnoreCase("download")) {
 				Usuario usuario = this.usuarioDao.buscarPorId(Long.parseLong(idUsuario));
 				if (usuario != null) {
-					// image/png (contentType)
-					resp.setHeader("Content-Disposition", "attachment;filename=arquivo." + usuario.getContentType().split("\\/")[1]);
+					String contentType = "";
+					byte[] fileBytes = null;
+					String tipo = req.getParameter("tipo");
 
-					/* Converte a base64 da imagem do banco para byte[] */
-					byte[] imageFotoBytes = new Base64().decodeBase64(usuario.getFotoBase64());
+					if (tipo.equalsIgnoreCase("imagem")) {
+						contentType = usuario.getContentType();
+						/*
+						 * Converte a base64 da imagem do banco para byte[]
+						 */
+						fileBytes = new Base64().decodeBase64(usuario.getFotoBase64());
+					} else if (tipo.equalsIgnoreCase("curriculo")) {
+						contentType = usuario.getContentTypeCurriculo();
+						/*
+						 * Converte a base64 do pdf do banco para byte[]
+						 */
+						fileBytes = new Base64().decodeBase64(usuario.getCurriculoBase64());
+					}
+
+					// image/png (contentType)
+					resp.setHeader("Content-Disposition", "attachment;filename=arquivo." + contentType.split("\\/")[1]);
+
 					/* coloca os bytes em um objeto de entrada para processar */
-					InputStream is = new ByteArrayInputStream(imageFotoBytes);
+					InputStream inputStream = new ByteArrayInputStream(fileBytes);
 					/* inicio da resposta para o navegador */
 					int read = 0;
 					byte[] bytes = new byte[1024];
-					ServletOutputStream os = resp.getOutputStream();
+					ServletOutputStream outputStream = resp.getOutputStream();
 
-					while ((read = is.read(bytes)) != -1) {
-						os.write(bytes, 0, read);
+					while ((read = inputStream.read(bytes)) != -1) {
+						outputStream.write(bytes, 0, read);
 					}
 
-					os.flush();
-					os.close();
+					outputStream.flush();
+					outputStream.close();
 				}
 			}
 		} catch (Exception e) {
@@ -116,12 +132,24 @@ public class UsuarioServlet extends HttpServlet {
 		try {
 			/** Inicio File Upload de imagens e pdf */
 			if (ServletFileUpload.isMultipartContent(req)) {
+				/* processa imagem */
 				Part imagemFoto = req.getPart("foto");
+				if (imagemFoto != null) {
+					String fotoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(imagemFoto.getInputStream()));
 
-				String fotoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(imagemFoto.getInputStream()));
+					usuario.setFotoBase64(fotoBase64);
+					usuario.setContentType(imagemFoto.getContentType());
+				}
 
-				usuario.setFotoBase64(fotoBase64);
-				usuario.setContentType(imagemFoto.getContentType());
+				/* processa pdf */
+				Part curriculoPdf = req.getPart("curriculo");
+				if (curriculoPdf != null) {
+					String curriculoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(curriculoPdf.getInputStream()));
+
+					usuario.setCurriculoBase64(curriculoBase64);
+					usuario.setContentTypeCurriculo(imagemFoto.getContentType());
+				}
+
 			}
 			/** FIM File Upload de imagens e pdf */
 

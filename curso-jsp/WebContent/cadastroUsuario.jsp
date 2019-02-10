@@ -63,6 +63,10 @@
 						<td><input type="file" id="foto" name="foto"></td>
 					</tr>
 					<tr>
+						<td class="label">Curriculo:</td>
+						<td><input type="file" id="curriculo" name="curriculo"></td>
+					</tr>
+					<tr>
 						<td></td>
 						<td>
 							<input type="button" value="Cancelar"
@@ -84,6 +88,7 @@
 					<th>Login</th>
 					<th>Foto</th>
 					<th>Nome</th>
+					<th>Curriculo</th>
 					<th>Fones</th>
 					<th>Editar</th>
 					<th>Delete</th>
@@ -95,11 +100,12 @@
 						<td><c:out value="${u.id}"></c:out></td>
 						<td><c:out value="${u.login}"></c:out></td>
 						<td>
-							<a href="UsuarioServlet?acao=download&id=${u.id}">
+							<a href="UsuarioServlet?acao=download&tipo=imagem&id=${u.id}">
 								<img src="<c:out value="${u.tempFotoUsuario}"/>" alt="Imagem usuário" title="Imagem usuário" width="32px" height="32px">
 							</a>
 						</td>
 						<td><c:out value="${u.nome}"></c:out></td>
+						<td><a href="UsuarioServlet?acao=download&tipo=curriculo&id=${u.id}" target="_blank">Currículo</a></td>
 						<td>
 							<a href="TelefoneServlet?idUsuario=${u.id}"> 
 								<img alt="Telefones" title="Telefones" src="resources/img/telefone.png" width="20px" height="20px">

@@ -15,8 +15,11 @@ public class Usuario {
 	private String ibge;
 	private String fotoBase64;
 	private String contentType;
+	private String curriculoBase64;
+	private String contentTypeCurriculo;
 
 	private String tempFotoUsuario;
+	private String tempCurriculoUsuario;
 
 	public Long getId() {
 		return id;
@@ -114,6 +117,22 @@ public class Usuario {
 		this.fotoBase64 = fotoBase64;
 	}
 
+	public String getCurriculoBase64() {
+		return curriculoBase64;
+	}
+
+	public void setCurriculoBase64(String curriculoBase64) {
+		this.curriculoBase64 = curriculoBase64;
+	}
+
+	public String getContentTypeCurriculo() {
+		return contentTypeCurriculo;
+	}
+
+	public void setContentTypeCurriculo(String contentTypeCurriculo) {
+		this.contentTypeCurriculo = contentTypeCurriculo;
+	}
+
 	public String getContentType() {
 		return contentType;
 	}
@@ -125,5 +144,9 @@ public class Usuario {
 	public String getTempFotoUsuario() {
 		tempFotoUsuario = "data:" + contentType + ";base64," + fotoBase64;
 		return tempFotoUsuario;
+	}
+
+	public String getTempCurriculoUsuario() {
+		return tempCurriculoUsuario;
 	}
 }
