@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import connection.ConnectionDataBaseteste;
+import connection.ConnectionDataBase;
 import model.Usuario;
 
 public class UsuarioDao {
@@ -14,7 +14,7 @@ public class UsuarioDao {
 	private static Connection connection;
 
 	public UsuarioDao() {
-		connection = ConnectionDataBaseteste.getConnection();
+		connection = ConnectionDataBase.getConnection();
 	}
 
 	public List<Usuario> listarTodos() throws Exception {
