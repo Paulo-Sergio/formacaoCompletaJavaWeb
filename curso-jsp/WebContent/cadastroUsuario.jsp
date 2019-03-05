@@ -60,11 +60,19 @@
 						<td class="label">IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${usuario.ibge}"></td>
 						<td class="label">Foto:</td>
-						<td><input type="file" id="foto" name="foto"></td>
+						<td>
+							<input type="file" id="foto" name="foto" />
+							<input type="hidden" name="fotoTemp" readonly value="${usuario.fotoBase64}" />
+							<input type="hidden" name="contentTypeTemp" readonly value="${usuario.contentType}" />
+						</td>
 					</tr>
 					<tr>
 						<td class="label">Curriculo:</td>
-						<td><input type="file" id="curriculo" name="curriculo"></td>
+						<td>
+							<input type="file" id="curriculo" name="curriculo" />
+							<input type="hidden" name="curriculoTemp" readonly value="${usuario.curriculoBase64}" />
+							<input type="hidden" name="contentTypeCurriculoTemp" readonly value="${usuario.contentTypeCurriculo}" />
+						</td>
 					</tr>
 					<tr>
 						<td></td>
@@ -99,13 +107,26 @@
 					<tr>
 						<td><c:out value="${u.id}"></c:out></td>
 						<td><c:out value="${u.login}"></c:out></td>
-						<td>
-							<a href="UsuarioServlet?acao=download&tipo=imagem&id=${u.id}">
-								<img src="<c:out value="${u.tempFotoUsuario}"/>" alt="Imagem usuário" title="Imagem usuário" width="32px" height="32px">
-							</a>
-						</td>
+						<c:if test="${u.fotoBase64 != null}">
+							<td>
+								<a href="UsuarioServlet?acao=download&tipo=imagem&id=${u.id}">
+									<img src="<c:out value="${u.tempFotoUsuario}"/>" alt="Imagem usuário" title="Imagem usuário" width="32px" height="32px">
+								</a>
+							</td>
+						</c:if>
+						<c:if test="${u.fotoBase64 == null}">
+							<td><img alt="img usuario" src="resources/img/usuario-padrao.png" width="32px" height="32px" /></td>
+						</c:if>
+						
 						<td><c:out value="${u.nome}"></c:out></td>
-						<td><a href="UsuarioServlet?acao=download&tipo=curriculo&id=${u.id}" target="_blank">Currículo</a></td>
+						
+						<c:if test="${u.curriculoBase64 != null}">
+							<td><a href="UsuarioServlet?acao=download&tipo=curriculo&id=${u.id}"><img src="resources/img/pdf.png" width="32px" height="32px" /></a></td>
+						</c:if>
+						<c:if test="${u.curriculoBase64 == null}">
+							<td><img src="resources/img/no-pdf.png" width="32px" height="32px" /></td>
+						</c:if>
+						
 						<td>
 							<a href="TelefoneServlet?idUsuario=${u.id}"> 
 								<img alt="Telefones" title="Telefones" src="resources/img/telefone.png" width="20px" height="20px">

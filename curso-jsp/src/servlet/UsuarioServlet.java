@@ -134,20 +134,26 @@ public class UsuarioServlet extends HttpServlet {
 			if (ServletFileUpload.isMultipartContent(req)) {
 				/* processa imagem */
 				Part imagemFoto = req.getPart("foto");
-				if (imagemFoto != null) {
-					String fotoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(imagemFoto.getInputStream()));
+				if (imagemFoto != null && imagemFoto.getInputStream().available() > 0) {
+					String fotoBase64 = new Base64().encodeBase64String(this.converteStreamParaBytes(imagemFoto.getInputStream()));
 
 					usuario.setFotoBase64(fotoBase64);
 					usuario.setContentType(imagemFoto.getContentType());
+				} else {
+					usuario.setFotoBase64(req.getParameter("fotoTemp"));
+					usuario.setContentType(req.getParameter("contentTypeTemp"));
 				}
 
 				/* processa pdf */
 				Part curriculoPdf = req.getPart("curriculo");
-				if (curriculoPdf != null) {
-					String curriculoBase64 = new Base64().encodeBase64String(this.converteStreamParaByte(curriculoPdf.getInputStream()));
+				if (curriculoPdf != null && curriculoPdf.getInputStream().available() > 0) {
+					String curriculoBase64 = new Base64().encodeBase64String(this.converteStreamParaBytes(curriculoPdf.getInputStream()));
 
 					usuario.setCurriculoBase64(curriculoBase64);
-					usuario.setContentTypeCurriculo(imagemFoto.getContentType());
+					usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
+				} else {
+					usuario.setCurriculoBase64(req.getParameter("curriculoTemp"));
+					usuario.setContentTypeCurriculo(req.getParameter("curriculoContentTypeTemp"));
 				}
 
 			}
@@ -199,12 +205,12 @@ public class UsuarioServlet extends HttpServlet {
 	}
 
 	/* Converte a entrada de fluxo de dados da imagem para array de bytes */
-	private byte[] converteStreamParaByte(InputStream imagem) throws IOException {
+	private byte[] converteStreamParaBytes(InputStream inputStream) throws IOException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		int reads = imagem.read();
+		int reads = inputStream.read();
 		while (reads != -1) {
 			outputStream.write(reads);
-			reads = imagem.read();
+			reads = inputStream.read();
 		}
 
 		return outputStream.toByteArray();

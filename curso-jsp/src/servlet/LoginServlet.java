@@ -21,14 +21,14 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String acao = req.getParameter("acao");
-		
+
 		if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
 			HttpSession session = req.getSession();
 			session.invalidate();
 			resp.sendRedirect("AutenticacaoServlet");
 			return;
 		}
-		
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
 		dispatcher.forward(req, resp);
 	}
