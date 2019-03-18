@@ -38,27 +38,26 @@
 					</tr>
 					
 					<tr>
-						<td class="label">Telefone:</td>
-						<td><input type="text" id="telefone" name="telefone" value="${usuario.telefone}"></td>
 						<td class="label">CEP:</td>
 						<td><input type="text" id="cep" name="cep" onblur="consultarCep()" value="${usuario.cep}"></td>
+						<td class="label">Rua:</td>
+						<td><input type="text" id="rua" name="rua" value="${usuario.rua}"></td>
 					</tr>
 
 					<tr>
-						<td class="label">Rua:</td>
-						<td><input type="text" id="rua" name="rua" value="${usuario.rua}"></td>
 						<td class="label">Bairro:</td>
 						<td><input type="text" id="bairro" name="bairro" value="${usuario.bairro}"></td>
-					</tr>
-					<tr>
 						<td class="label">Cidade:</td>
 						<td><input type="text" id="cidade" name="cidade" value="${usuario.cidade}"></td>
-						<td class="label">Estado:</td>
-						<td><input type="text" id="estado" name="estado" value="${usuario.estado}"></td>
 					</tr>
 					<tr>
+						<td class="label">Estado:</td>
+						<td><input type="text" id="estado" name="estado" value="${usuario.estado}"></td>
 						<td class="label">IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${usuario.ibge}"></td>
+					</tr>
+					<tr>
+						
 						<td class="label">Foto:</td>
 						<td>
 							<input type="file" id="foto" name="foto" />

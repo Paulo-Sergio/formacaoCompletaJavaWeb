@@ -108,7 +108,6 @@ public class UsuarioServlet extends HttpServlet {
 		String login = req.getParameter("login");
 		String nome = req.getParameter("nome");
 		String senha = req.getParameter("senha");
-		String telefone = req.getParameter("telefone");
 		String cep = req.getParameter("cep");
 		String rua = req.getParameter("rua");
 		String bairro = req.getParameter("bairro");
@@ -121,7 +120,6 @@ public class UsuarioServlet extends HttpServlet {
 		usuario.setLogin(login);
 		usuario.setNome(nome);
 		usuario.setSenha(senha);
-		usuario.setTelefone(telefone);
 		usuario.setCep(cep);
 		usuario.setRua(rua);
 		usuario.setBairro(bairro);

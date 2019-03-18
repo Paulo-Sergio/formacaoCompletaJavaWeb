@@ -21,24 +21,23 @@ public class UsuarioDao {
 	public void salvar(Usuario usuario) {
 		try {
 			String sql = "INSERT INTO "
-					+ "usuarios (login, nome, senha, telefone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "usuarios (login, nome, senha, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculobase64, contenttypecurriculo) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getNome());
 			stmt.setString(3, usuario.getSenha());
-			stmt.setString(4, usuario.getTelefone());
-			stmt.setString(5, usuario.getCep());
-			stmt.setString(6, usuario.getRua());
-			stmt.setString(7, usuario.getBairro());
-			stmt.setString(8, usuario.getCidade());
-			stmt.setString(9, usuario.getEstado());
-			stmt.setString(10, usuario.getIbge());
-			stmt.setString(11, usuario.getFotoBase64());
-			stmt.setString(12, usuario.getContentType());
-			stmt.setString(13, usuario.getCurriculoBase64());
-			stmt.setString(14, usuario.getContentTypeCurriculo());
+			stmt.setString(4, usuario.getCep());
+			stmt.setString(5, usuario.getRua());
+			stmt.setString(6, usuario.getBairro());
+			stmt.setString(7, usuario.getCidade());
+			stmt.setString(8, usuario.getEstado());
+			stmt.setString(9, usuario.getIbge());
+			stmt.setString(10, usuario.getFotoBase64());
+			stmt.setString(11, usuario.getContentType());
+			stmt.setString(12, usuario.getCurriculoBase64());
+			stmt.setString(13, usuario.getContentTypeCurriculo());
 
 			stmt.execute();
 
@@ -57,7 +56,7 @@ public class UsuarioDao {
 	public void atualizar(Usuario usuario) {
 		try {
 			String sql = "UPDATE usuarios "
-					+ "SET login = ?, nome = ?, senha = ?, telefone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, "
+					+ "SET login = ?, nome = ?, senha = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, "
 					+ "ibge = ?, fotobase64 = ?, contenttype = ?, curriculobase64 = ?, contenttypecurriculo = ? "
 					+ "WHERE id = ?";
 
@@ -65,18 +64,17 @@ public class UsuarioDao {
 			stmt.setString(1, usuario.getLogin());
 			stmt.setString(2, usuario.getNome());
 			stmt.setString(3, usuario.getSenha());
-			stmt.setString(4, usuario.getTelefone());
-			stmt.setString(5, usuario.getCep());
-			stmt.setString(6, usuario.getRua());
-			stmt.setString(7, usuario.getBairro());
-			stmt.setString(8, usuario.getCidade());
-			stmt.setString(9, usuario.getEstado());
-			stmt.setString(10, usuario.getIbge());
-			stmt.setString(11, usuario.getFotoBase64());
-			stmt.setString(12, usuario.getContentType());
-			stmt.setString(13, usuario.getCurriculoBase64());
-			stmt.setString(14, usuario.getContentTypeCurriculo());
-			stmt.setLong(15, usuario.getId());
+			stmt.setString(4, usuario.getCep());
+			stmt.setString(5, usuario.getRua());
+			stmt.setString(6, usuario.getBairro());
+			stmt.setString(7, usuario.getCidade());
+			stmt.setString(8, usuario.getEstado());
+			stmt.setString(9, usuario.getIbge());
+			stmt.setString(10, usuario.getFotoBase64());
+			stmt.setString(11, usuario.getContentType());
+			stmt.setString(12, usuario.getCurriculoBase64());
+			stmt.setString(13, usuario.getContentTypeCurriculo());
+			stmt.setLong(14, usuario.getId());
 
 			stmt.executeUpdate();
 
@@ -105,7 +103,6 @@ public class UsuarioDao {
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
-			usuario.setTelefone(resultSet.getString("telefone"));
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setRua(resultSet.getString("rua"));
 			usuario.setBairro(resultSet.getString("bairro"));
@@ -158,7 +155,6 @@ public class UsuarioDao {
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
-			usuario.setTelefone(resultSet.getString("telefone"));
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setRua(resultSet.getString("rua"));
 			usuario.setBairro(resultSet.getString("bairro"));
@@ -188,7 +184,6 @@ public class UsuarioDao {
 			usuario.setLogin(resultSet.getString("login"));
 			usuario.setNome(resultSet.getString("nome"));
 			usuario.setSenha(resultSet.getString("senha"));
-			usuario.setTelefone(resultSet.getString("telefone"));
 			usuario.setCep(resultSet.getString("cep"));
 			usuario.setRua(resultSet.getString("rua"));
 			usuario.setBairro(resultSet.getString("bairro"));
